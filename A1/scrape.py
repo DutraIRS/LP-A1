@@ -118,12 +118,15 @@ def pegar_tempo(url: str):
     for item in tempo_ano:
         tempo_ano_list.append(item)
         print(tempo_ano_list)
-    tempo = tempo_ano_list[1]
+    try:
+        tempo = tempo_ano_list[1]
+    except:
+        tempo = None
     
     try:
         return tempo.text
     except:
-        print('Tempo não encontrado')
+        return None
 
 def pegar_tempo_musicas_album(url: str):
     '''
@@ -148,10 +151,8 @@ def pegar_tempo_musicas_album(url: str):
             tempo_album = "https://www.lyrics.com/" + a['href']
             print('procurando tempo no link: ', "https://www.lyrics.com/" + a['href'])
             
-            time = None
-            while time == None:
-                time = pegar_tempo(tempo_album)
-                lista_tempos.append(time)
+            time = pegar_tempo(tempo_album)
+            lista_tempos.append(time)
 
     return lista_tempos
         
@@ -207,6 +208,4 @@ def gerar_dataframe_banda(url_list: list):
     print(df)
     return df
 
-
-gerar_dataframe_banda(['https://www.lyrics.com/album/571148/G-N%27-R-Lies-Appetite-for-Destruction', 'https://www.lyrics.com/album/3342643/Dust-and-Bones'])
 #se quiser testa esse também https://www.lyrics.com/album/571148/G-N%27-R-Lies-Appetite-for-Destruction
