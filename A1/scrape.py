@@ -57,7 +57,6 @@ def pegar_letras_musicas_album(url: str):
         #Ao pegar todos esses links usaremos a função 'pegar_letra' para pegar a letra de cada uma das músicas
         for a in links:
             letra_album = "https://www.lyrics.com/" + a['href']
-            print('pegando a letra da música: ', "https://www.lyrics.com/" + a['href'])
 
             #O site usado dá um erro em momentos aleatórios onde não há conteúdo no link
             #Para resolver esse problema usaremos um while, toda vez que o site estiver
@@ -100,7 +99,6 @@ def pegar_titulos_musicas_album(url: str):
         #Ao pegar todos esses links usaremos a função 'pegar_titulo' para pegar a letra de cada uma das músicas
         for a in links:
             letra_album = "https://www.lyrics.com/" + a['href']
-            print('pegando o título da música: ', "https://www.lyrics.com/" + a['href'])
 
             #Uso do while para evitar o erro da página vazia novamente
             titulos = None
@@ -137,6 +135,21 @@ def pegar_tempo_musicas_album(url: str):
             count += 1
         
         return lista_tempos
+def pegar_titulo_album(url: str):
+    '''
+	A função recebe um url do site lyrics.com, busca o tempo de todas as músicas
+    desse álbum e retorna uma lista com esses tempos
+
+	:param url: Link da página da música
+	:url type: str
+	:return: Tempo das músicas do álbum
+	:r type: list
+	'''
+    soup = BeautifulSoup(pegar_html(url), 'html.parser')
+    album = soup.find('h1')
+
+    titulo_album = album.text
+    return titulo_album.replace(' Album', '')
 
 def gerar_dataframe_album(url: str):
     '''
@@ -154,5 +167,26 @@ def gerar_dataframe_album(url: str):
     print(df)
     return df
 
-print(type(gerar_dataframe_album('https://www.lyrics.com/album/571148/G-N%27-R-Lies-Appetite-for-Destruction')))
+def gerar_dataframe_banda(url_list: list):
+    lista_titulos = []
+    lista_letras = []
+    lista_tempo = []
+    lista_titulo_album = []
+    for album in url_list:
+        lista_titulos += pegar_titulos_musicas_album(album)
+        lista_letras += pegar_letras_musicas_album(album)
+        lista_tempo += pegar_tempo_musicas_album(album)
+        numero_faixas = len(pegar_letras_musicas_album(album))
+        lista_titulo_album += [pegar_titulo_album(album)]*numero_faixas
+        print(lista_tempo)
+    dados = {'Tempo':lista_tempo, 'letra':lista_letras}
+    indice = [lista_titulo_album, lista_titulos]
+    print(indice)
+    df = pd.DataFrame(data=dados, index=indice)
+    print(df)
+    return df
+
+
+
+gerar_dataframe_banda(['https://www.lyrics.com/album/3648707/Unplugged-1993', 'https://www.lyrics.com/album/3287348/Acoustic-Sessions-NY'])
 #se quiser testa esse também https://www.lyrics.com/album/571148/G-N%27-R-Lies-Appetite-for-Destruction
