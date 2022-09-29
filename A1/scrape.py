@@ -57,6 +57,7 @@ def pegar_letras_musicas_album(url: str):
         #Ao pegar todos esses links usaremos a função 'pegar_letra' para pegar a letra de cada uma das músicas
         for a in links:
             letra_album = "https://www.lyrics.com/" + a['href']
+            print('procurando letra no link: ', "https://www.lyrics.com/" + a['href'])
 
             #O site usado dá um erro em momentos aleatórios onde não há conteúdo no link
             #Para resolver esse problema usaremos um while, toda vez que o site estiver
@@ -99,6 +100,7 @@ def pegar_titulos_musicas_album(url: str):
         #Ao pegar todos esses links usaremos a função 'pegar_titulo' para pegar a letra de cada uma das músicas
         for a in links:
             letra_album = "https://www.lyrics.com/" + a['href']
+            print('procurando título no link: ', "https://www.lyrics.com/" + a['href'])
 
             #Uso do while para evitar o erro da página vazia novamente
             titulos = None
@@ -107,6 +109,21 @@ def pegar_titulos_musicas_album(url: str):
 
             lista_titulos.append(titulos.replace('\n', ' ').replace('\r', '').replace('[Chorus:] ', ''))
         return lista_titulos
+
+def pegar_tempo(url: str):
+    soup = BeautifulSoup(pegar_html(url), 'html.parser')
+    tempo_ano = soup.findAll('dd', attrs={'class': 'dd-margin'})
+
+    tempo_ano_list = []
+    for item in tempo_ano:
+        tempo_ano_list.append(item)
+        print(tempo_ano_list)
+    tempo = tempo_ano_list[1]
+    
+    try:
+        return tempo.text
+    except:
+        print('Tempo não encontrado')
 
 def pegar_tempo_musicas_album(url: str):
     '''
@@ -121,20 +138,24 @@ def pegar_tempo_musicas_album(url: str):
     soup = BeautifulSoup(pegar_html(url), 'html.parser')
     album = soup.findAll('table', attrs={'class': 'table tdata'})
 
-    for div in album:
-        tempo_td = div.find_all('td', attrs={'class': 'tal qx fsl'})
-        lista_tempos = []
+    lista_tempos = []
 
-        #Os tempos das músicas estão localizados em uma tabela 'td' de classe 'tal qx fsl'
-        #Especificamente na quarta coluna então usando um contador obteremos todos os conteúdos
-        #Que estão na quarta coluna.
-        count = 1
-        for tem in tempo_td:
-            if count % 4 == 0:
-                lista_tempos.append(tem.text)
-            count += 1
+    #dentro do link do album buscaremos todos os links que levam as suas músicas
+    for div in album:
+        links = div.find_all('a')
+        #Ao pegar todos esses links usaremos a função 'pegar_letra' para pegar a letra de cada uma das músicas
+        for a in links:
+            tempo_album = "https://www.lyrics.com/" + a['href']
+            print('procurando tempo no link: ', "https://www.lyrics.com/" + a['href'])
+            
+            time = None
+            while time == None:
+                time = pegar_tempo(tempo_album)
+                lista_tempos.append(time)
+
+    return lista_tempos
         
-        return lista_tempos
+
 def pegar_titulo_album(url: str):
     '''
 	A função recebe um url do site lyrics.com, busca o tempo de todas as músicas
@@ -187,6 +208,5 @@ def gerar_dataframe_banda(url_list: list):
     return df
 
 
-
-gerar_dataframe_banda(['https://www.lyrics.com/album/3648707/Unplugged-1993', 'https://www.lyrics.com/album/3287348/Acoustic-Sessions-NY'])
+gerar_dataframe_banda(['https://www.lyrics.com/album/571148/G-N%27-R-Lies-Appetite-for-Destruction', 'https://www.lyrics.com/album/3342643/Dust-and-Bones'])
 #se quiser testa esse também https://www.lyrics.com/album/571148/G-N%27-R-Lies-Appetite-for-Destruction
