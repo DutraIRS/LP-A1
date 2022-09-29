@@ -31,3 +31,5 @@ Sabendo as perguntas que deveriam ser respondidas, listamos as informações que
 *Figura 2 - Diagrama do Modelo Relacional*
 
 <br>
+
+É importante notar que, embora uma mesma música possa estar em vários álbuns, cada nova versão pressupõe mudanças na performance. A intonação, o tempo, as intervenções durantes as pausas, enfim, a emoção transmitida muda a cada regravação. Por exemplo, You're Crazy de Appetite for Destruction é consideravelmente mais acelerada e agressiva que a sua versão em G N' R Lies. O próprio timbre do Axl Rose é mais grave no segundo álbum. Por isso, decidimos considerar versões diferentes da mesma música como músicas diferentes.
