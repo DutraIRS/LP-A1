@@ -81,6 +81,7 @@ def pegar_titulo(url: str):
 	:return: Título da música
 	:r type: str
 	'''
+
     soup = BeautifulSoup(pegar_html(url), 'html.parser')
     titulo = soup.find('h1', id='lyric-title-text')
     try:
@@ -89,6 +90,15 @@ def pegar_titulo(url: str):
         print('erro')
 
 def pegar_titulos_musicas_album(url: str):
+    '''
+	A função recebe um url do site lyrics.com, busca os títulos de todas as músicas
+    desse album e retorna uma lista com esses títulos
+
+	:param url: Link da página do álbum escolhido
+	:url type: str
+	:return: Títulos das músicas do álbum
+	:r type: list
+	'''
     soup = BeautifulSoup(pegar_html(url), 'html.parser')
     album = soup.findAll('table', attrs={'class': 'table tdata'})
 
@@ -111,13 +121,21 @@ def pegar_titulos_musicas_album(url: str):
         return lista_titulos
 
 def pegar_ano(url: str):
+    '''
+	A função recebe um url do site lyrics.com, busca o ano de lançamento da música que está presente
+    nesse html e retorna uma string referente ao seu ano de lançamento
+    
+	:param url: Link da página da música
+	:url type: str
+	:return: Ano de lançamento
+	:r type: str
+	'''
     soup = BeautifulSoup(pegar_html(url), 'html.parser')
     tempo_ano = soup.findAll('dd', attrs={'class': 'dd-margin'})
 
     tempo_ano_list = []
     for item in tempo_ano:
         tempo_ano_list.append(item)
-        print(tempo_ano_list)
     try:
         tempo = tempo_ano_list[0]
     except:
@@ -190,6 +208,15 @@ def gerar_dataframe_album(url: str):
     return df
 
 def gerar_dataframe_banda(url_list: list):
+    '''
+    Usando as funções criadas e recebendo como parâmetro uma lista de links obteremos
+    um dataframe de uma banda dado a partir da lista de urls do site lyrics.com
+    
+	:param url_list: Lista de links dos albuns da banda
+	:url_list type: list
+	:return: Dataframe da banda
+	:r type: DataFrame
+    '''
     lista_titulos = []
     lista_letras = []
     lista_anos = []
