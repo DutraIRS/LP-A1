@@ -110,7 +110,7 @@ def pegar_titulos_musicas_album(url: str):
             lista_titulos.append(titulos.replace('\n', ' ').replace('\r', '').replace('[Chorus:] ', ''))
         return lista_titulos
 
-def pegar_tempo(url: str):
+def pegar_ano(url: str):
     soup = BeautifulSoup(pegar_html(url), 'html.parser')
     tempo_ano = soup.findAll('dd', attrs={'class': 'dd-margin'})
 
@@ -119,7 +119,7 @@ def pegar_tempo(url: str):
         tempo_ano_list.append(item)
         print(tempo_ano_list)
     try:
-        tempo = tempo_ano_list[1]
+        tempo = tempo_ano_list[0]
     except:
         tempo = None
     
@@ -128,7 +128,7 @@ def pegar_tempo(url: str):
     except:
         return None
 
-def pegar_tempo_musicas_album(url: str):
+def pegar_ano_musicas_album(url: str):
     '''
 	A função recebe um url do site lyrics.com, busca o tempo de todas as músicas
     desse álbum e retorna uma lista com esses tempos
@@ -151,7 +151,7 @@ def pegar_tempo_musicas_album(url: str):
             tempo_album = "https://www.lyrics.com/" + a['href']
             print('procurando tempo no link: ', "https://www.lyrics.com/" + a['href'])
             
-            time = pegar_tempo(tempo_album)
+            time = pegar_ano(tempo_album)
             lista_tempos.append(time)
 
     return lista_tempos
@@ -184,7 +184,7 @@ def gerar_dataframe_album(url: str):
 	:r type: DataFrame
     '''
     print('O processo pode demorar um pouco dependendo da quantidade de músicas. Aguarde...')
-    dados = {'Tempo':pegar_tempo_musicas_album(url), 'letra':pegar_letras_musicas_album(url)}
+    dados = {'Ano':pegar_ano_musicas_album(url), 'letra':pegar_letras_musicas_album(url)}
     df = pd.DataFrame(data=dados, index=[pegar_titulos_musicas_album(url)])
     print(df)
     return df
@@ -192,20 +192,16 @@ def gerar_dataframe_album(url: str):
 def gerar_dataframe_banda(url_list: list):
     lista_titulos = []
     lista_letras = []
-    lista_tempo = []
+    lista_anos = []
     lista_titulo_album = []
     for album in url_list:
         lista_titulos += pegar_titulos_musicas_album(album)
         lista_letras += pegar_letras_musicas_album(album)
-        lista_tempo += pegar_tempo_musicas_album(album)
+        lista_anos += pegar_ano_musicas_album(album)
         numero_faixas = len(pegar_letras_musicas_album(album))
         lista_titulo_album += [pegar_titulo_album(album)]*numero_faixas
-        print(lista_tempo)
-    dados = {'Tempo':lista_tempo, 'letra':lista_letras}
+    dados = {'Ano':lista_anos, 'letra':lista_letras}
     indice = [lista_titulo_album, lista_titulos]
-    print(indice)
     df = pd.DataFrame(data=dados, index=indice)
     print(df)
     return df
-
-#se quiser testa esse também https://www.lyrics.com/album/571148/G-N%27-R-Lies-Appetite-for-Destruction
