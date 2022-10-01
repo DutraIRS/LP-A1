@@ -227,6 +227,78 @@ def pegar_compositores_musicas_album(url: str):
             lista_compositores.append(compositores)
     return lista_compositores
 
+def pegar_link_youtube(url: str):
+    '''
+	A função recebe um url do site lyrics.com, busca a letra da música que está presente
+    nesse html e retorna uma string referente a letra dessa música
+
+	:param url: Link da página da música
+	:url type: str
+	:return: letra da música
+	:r type: str
+	'''
+
+    soup = BeautifulSoup(pegar_html(url), 'html.parser')
+    views = soup.find('div', class_='youtube-player')['data-id']
+    return views
+
+def pegar_visualizacoes(url: str):
+    '''
+	A função recebe um url do site lyrics.com, busca a letra da música que está presente
+    nesse html e retorna uma string referente a letra dessa música
+
+	:param url: Link da página da música
+	:url type: str
+	:return: letra da música
+	:r type: str
+	'''
+
+    soup = BeautifulSoup(pegar_html(url), 'html.parser')
+    try:
+        views = soup.find("meta", itemprop="interactionCount")["content"]
+        return views
+    except:
+        return None
+
+
+
+
+def pegar_visualizacoes_musicas_album(url:str):
+    '''
+	A função recebe um url do site lyrics.com, busca o tempo de todas as músicas
+    desse álbum e retorna uma lista com esses tempos
+
+	:param url: Link da página da música
+	:url type: str
+	:return: Tempo das músicas do álbum
+	:r type: list
+	'''
+    soup = BeautifulSoup(pegar_html(url), 'html.parser')
+    album = soup.findAll('table', attrs={'class': 'table tdata'})
+
+    lista_visualizacoes = []
+
+    #dentro do link do album buscaremos todos os links que levam as suas músicas
+    for div in album:
+        links = div.find_all('a')
+        #Ao pegar todos esses links usaremos a função 'pegar_letra' para pegar a letra de cada uma das músicas
+        for a in links:
+            links_musicas_album = "https://www.lyrics.com/" + a['href']
+            
+            link = None
+            while link == None:
+                link = pegar_link_youtube(links_musicas_album)
+                print('Pegando link do youtube: ', link)
+            
+
+            visualizacoes = pegar_visualizacoes('http://youtube.com/watch?v='+link)
+            print('Pegando views no link ', 'http://youtube.com/watch?v='+link)
+            try:
+                lista_visualizacoes.append(visualizacoes)
+            except:
+                lista_visualizacoes.append('None')
+    return lista_visualizacoes
+
 def gerar_dataframe_album(url: str):
     '''
     Usando as funções criadas obteremos um dataframe de um álbum dado a partir de
@@ -238,7 +310,7 @@ def gerar_dataframe_album(url: str):
 	:r type: DataFrame
     '''
     print('O processo pode demorar um pouco dependendo da quantidade de músicas. Aguarde...')
-    dados = {'Ano':pegar_ano_musicas_album(url), 'letra':pegar_letras_musicas_album(url)}
+    dados = {'Ano':pegar_ano_musicas_album(url),'Compositores':pegar_compositores_musicas_album(url), 'letra':pegar_letras_musicas_album(url)}
     df = pd.DataFrame(data=dados, index=[pegar_titulos_musicas_album(url)])
     print(df)
     return df
@@ -258,14 +330,16 @@ def gerar_dataframe_banda(url_list: list):
     lista_anos = []
     lista_compositores = []
     lista_titulo_album = []
+    lista_visualizacoes = []
     for album in url_list:
         lista_titulos += pegar_titulos_musicas_album(album)
         lista_letras += pegar_letras_musicas_album(album)
         lista_anos += pegar_ano_musicas_album(album)
-        lista_compositores += pegar_compositores_musicas_album(album) 
+        lista_compositores += pegar_compositores_musicas_album(album)
+        lista_visualizacoes += pegar_visualizacoes_musicas_album(album)
         numero_faixas = len(pegar_letras_musicas_album(album))
         lista_titulo_album += [pegar_titulo_album(album)]*numero_faixas
-    dados = {'Ano':lista_anos, 'compositores':lista_compositores, 'letra':lista_letras}
+    dados = {'Ano':lista_anos, 'compositores':lista_compositores, 'visualizacoes':lista_visualizacoes, 'letra':lista_letras}
     indice = [lista_titulo_album, lista_titulos]
     df = pd.DataFrame(data=dados, index=indice)
     print(df)
