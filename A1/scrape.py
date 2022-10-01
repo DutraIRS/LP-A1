@@ -260,9 +260,6 @@ def pegar_visualizacoes(url: str):
     except:
         return None
 
-
-
-
 def pegar_visualizacoes_musicas_album(url:str):
     '''
 	A função recebe um url do site lyrics.com, busca o tempo de todas as músicas
