@@ -191,6 +191,42 @@ def pegar_titulo_album(url: str):
     titulo_album = album.text
     return titulo_album.replace(' Album', '')
 
+def pegar_compositores(url: str):
+    soup = BeautifulSoup(pegar_html(url), 'html.parser')
+    detalhes = soup.find('div', attrs={'class': 'lyric-credits'})
+    
+    itens = detalhes.find('p', attrs={'class': False})
+    compositores = itens.text
+    
+    return compositores.replace('Written by: ', '')
+
+def pegar_compositores_musicas_album(url: str):
+    '''
+	A função recebe um url do site lyrics.com, busca o tempo de todas as músicas
+    desse álbum e retorna uma lista com esses tempos
+
+	:param url: Link da página da música
+	:url type: str
+	:return: Tempo das músicas do álbum
+	:r type: list
+	'''
+    soup = BeautifulSoup(pegar_html(url), 'html.parser')
+    album = soup.findAll('table', attrs={'class': 'table tdata'})
+
+    lista_compositores = []
+
+    #dentro do link do album buscaremos todos os links que levam as suas músicas
+    for div in album:
+        links = div.find_all('a')
+        #Ao pegar todos esses links usaremos a função 'pegar_letra' para pegar a letra de cada uma das músicas
+        for a in links:
+            compositores_album = "https://www.lyrics.com/" + a['href']
+            print('procurando compositores no link: ', "https://www.lyrics.com" + a['href'])
+            
+            compositores = pegar_compositores(compositores_album)
+            lista_compositores.append(compositores)
+    return lista_compositores
+
 def gerar_dataframe_album(url: str):
     '''
     Usando as funções criadas obteremos um dataframe de um álbum dado a partir de
@@ -220,14 +256,16 @@ def gerar_dataframe_banda(url_list: list):
     lista_titulos = []
     lista_letras = []
     lista_anos = []
+    lista_compositores = []
     lista_titulo_album = []
     for album in url_list:
         lista_titulos += pegar_titulos_musicas_album(album)
         lista_letras += pegar_letras_musicas_album(album)
         lista_anos += pegar_ano_musicas_album(album)
+        lista_compositores += pegar_compositores_musicas_album(album) 
         numero_faixas = len(pegar_letras_musicas_album(album))
         lista_titulo_album += [pegar_titulo_album(album)]*numero_faixas
-    dados = {'Ano':lista_anos, 'letra':lista_letras}
+    dados = {'Ano':lista_anos, 'compositores':lista_compositores, 'letra':lista_letras}
     indice = [lista_titulo_album, lista_titulos]
     df = pd.DataFrame(data=dados, index=indice)
     print(df)
