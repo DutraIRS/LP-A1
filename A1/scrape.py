@@ -298,6 +298,38 @@ def pegar_visualizacoes_musicas_album(url:str):
                 lista_visualizacoes.append('None')
     return lista_visualizacoes
 
+def pegar_duracao_musicas_album(url: str):
+    '''A função recebe um url do site pt.wikipedia.org, busca as durações das músicas
+    do álbum naquele link e retorna uma lista com essas durações
+    
+	:param url: Link da página do álbum (wikipédia)
+	:url type: str
+	:return: Lista com a duração das músicas
+	:rtype: list
+    '''
+
+    soup = BeautifulSoup(pegar_html(url), 'html.parser')
+    tabela = soup.find_all('td', style = 'padding-right: 10px; text-align: right; vertical-align: top;')
+    lista_duracoes = []
+    contador = 1
+    for time_stamp in tabela:
+        if contador%2 == 0:
+            lista_duracoes.append(time_stamp.text)
+            contador += 1
+        else:
+            contador += 1
+    return lista_duracoes
+
+def pegar_duracao_musicas_banda(url_list: list):
+    lista_duracoes = []
+
+    for album in url_list:
+        lista_duracoes += pegar_duracao_musicas_album(album)
+    dados = {'Duração':lista_duracoes}
+    df = pd.DataFrame(data=dados)
+    return df
+
+
 def gerar_dataframe_album(url: str):
     '''Usando as funções criadas está função cria um dataframe de um álbum dado a partir de
     um url do site lyrics.com da página desse álbum
@@ -349,5 +381,4 @@ def gerar_dataframe_banda(url_list: list):
     dados = {'Ano':lista_anos, 'compositores':lista_compositores, 'visualizacoes':lista_visualizacoes, 'letra':lista_letras}
     indice = [lista_titulo_album, lista_titulos]
     df = pd.DataFrame(data=dados, index=indice)
-    print(df)
     return df
