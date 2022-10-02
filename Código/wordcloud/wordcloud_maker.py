@@ -61,5 +61,5 @@ def criar_imagem(mask, dic, name):
 
 ####################################
 
-dic_freq = criar_dic_freq('guns.txt', "a|the|an|the|to|in|for|of|or|by|with|is|on|that|be")
-criar_imagem("../../Figuras/guns_mask.png", dic_freq, '../../Figuras/guns')
+#dic_freq = criar_dic_freq('guns.txt', "a|the|an|the|to|in|for|of|or|by|with|is|on|that|be")
+#criar_imagem("../../Figuras/guns_mask.png", dic_freq, '../../Figuras/guns')

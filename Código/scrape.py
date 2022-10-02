@@ -188,5 +188,5 @@ def gerar_dataframe_banda(url_list: list):
 
 
 
-gerar_dataframe_banda(['https://www.lyrics.com/album/3648707/Unplugged-1993', 'https://www.lyrics.com/album/3287348/Acoustic-Sessions-NY'])
+#gerar_dataframe_banda(['https://www.lyrics.com/album/3648707/Unplugged-1993', 'https://www.lyrics.com/album/3287348/Acoustic-Sessions-NY'])
 #se quiser testa esse também https://www.lyrics.com/album/571148/G-N%27-R-Lies-Appetite-for-Destruction
