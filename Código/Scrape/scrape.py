@@ -1,5 +1,8 @@
 import pandas as pd
 from bs4 import BeautifulSoup
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+
 import requests
 
 def pegar_html(url: str):
@@ -328,6 +331,24 @@ def pegar_duracao_musicas_banda(url_list: list):
     dados = {'Duração':lista_duracoes}
     df = pd.DataFrame(data=dados)
     return df
+
+def pegar_popularidade_album_spotify(url: str):
+    spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id='1a9faa80969a428cae902caf7caa6402', client_secret='d4ec70ec23114cd8a19b7b4dcf51aa62'))
+
+    results = spotify.album_tracks(url)
+    tracks = results['items']
+    while results['next']:
+        results = spotify.next(results)
+        tracks.extend(results)
+
+    lista_popularidade = []
+
+    for track in tracks:
+        track_id = track['id']
+        track_page = spotify.track(track_id)
+        popularity = track_page['popularity']
+        lista_popularidade.append(popularity)
+    return lista_popularidade
 
 
 def gerar_dataframe_album(url: str):

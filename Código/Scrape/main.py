@@ -11,7 +11,7 @@ df.to_csv('music.csv')'''
 
 '''df = sp.gerar_dataframe_album('https://www.lyrics.com/album/8763/Appetite-for-Destruction-%5BEdited%5D')'''
 
-df2 = sp.pegar_duracao_musicas_banda([
+'''df2 = sp.pegar_duracao_musicas_banda([
     'https://pt.wikipedia.org/wiki/Appetite_for_Destruction',
     'https://pt.wikipedia.org/wiki/G_N%27_R_Lies',
     'https://pt.wikipedia.org/wiki/Use_Your_Illusion_I',
@@ -23,7 +23,9 @@ df = pd.read_csv(r'D:\Downloads\LP-A1\A1\music_semduracao.csv')
 
 df3 = pd.concat([df, df2], axis=1, join='inner')
 df3 = df3.set_index(['Unnamed: 0', 'Unnamed: 1'])
-df3.to_csv('music.csv')
+df3.to_csv('music.csv')'''
+
+print(sp.pegar_popularidade_album_spotify('3I9Z1nDCL4E0cP62flcbI5'))
 
 #print(sp.pegar_visualizacoes('http://youtube.com/watch?v=1w7OgIMMRc4'))
 #print(sp.pegar_link_youtube('https://www.lyrics.com/lyric/668824/Welcome+to+the+Jungle'))
