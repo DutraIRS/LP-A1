@@ -26,6 +26,7 @@ df3 = df3.set_index(['Unnamed: 0', 'Unnamed: 1'])
 df3.to_csv('music.csv')'''
 
 print(sp.pegar_popularidade_album_spotify('3I9Z1nDCL4E0cP62flcbI5'))
+print(len(sp.pegar_popularidade_banda_spotify(['3I9Z1nDCL4E0cP62flcbI5','1RCAG3LrDwYsNU5ZiUJlWi','0CxPbTRARqKUYighiEY9Sz','00eiw4KOJZ7eC3NBEpmH4C','4ieR19hRkKeE81CalJPQNu','0suNLpB9xraAv1FcdlITjQ'])))
 
 #print(sp.pegar_visualizacoes('http://youtube.com/watch?v=1w7OgIMMRc4'))
 #print(sp.pegar_link_youtube('https://www.lyrics.com/lyric/668824/Welcome+to+the+Jungle'))

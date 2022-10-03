@@ -189,7 +189,7 @@ def pegar_titulo_album(url: str):
     album = soup.find('h1')
 
     titulo_album = album.text
-    return titulo_album.replace(' Album', '')
+    return titulo_album.replace(' Album', '').replace(' [edited]', '')
 
 def pegar_compositores(url: str):
     '''A função recebe um url do site lyrics.com, busca o(s) compositor(es) da música desse desse url
@@ -231,7 +231,7 @@ def pegar_compositores_musicas_album(url: str):
             compositores_album = "https://www.lyrics.com/" + a['href']
             print('procurando compositores no link: ', "https://www.lyrics.com" + a['href'])
             
-            compositores = pegar_compositores(compositores_album)
+            compositores = pegar_compositores(compositores_album).replace('(USA 2) ', '').replace('(usa 2) ', '')
             lista_compositores.append(compositores)
     return lista_compositores
 
@@ -332,10 +332,10 @@ def pegar_duracao_musicas_banda(url_list: list):
     df = pd.DataFrame(data=dados)
     return df
 
-def pegar_popularidade_album_spotify(url: str):
+def pegar_popularidade_album_spotify(spotify_id: str):
     spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id='1a9faa80969a428cae902caf7caa6402', client_secret='d4ec70ec23114cd8a19b7b4dcf51aa62'))
 
-    results = spotify.album_tracks(url)
+    results = spotify.album_tracks(spotify_id)
     tracks = results['items']
     while results['next']:
         results = spotify.next(results)
@@ -349,6 +349,12 @@ def pegar_popularidade_album_spotify(url: str):
         popularity = track_page['popularity']
         lista_popularidade.append(popularity)
     return lista_popularidade
+
+def pegar_popularidade_banda_spotify(spotify_id_list: list):
+    lista_popularidade_banda = []
+    for spotify_id in spotify_id_list:
+        lista_popularidade_banda += pegar_popularidade_album_spotify(spotify_id)
+    return lista_popularidade_banda
 
 
 def gerar_dataframe_album(url: str):
@@ -389,16 +395,15 @@ def gerar_dataframe_banda(url_list: list):
     lista_anos = []
     lista_compositores = []
     lista_titulo_album = []
-    lista_visualizacoes = []
 
     for album in url_list:
         lista_titulos += pegar_titulos_musicas_album(album)
         lista_letras += pegar_letras_musicas_album(album)
         lista_anos += pegar_ano_musicas_album(album)
         lista_compositores += pegar_compositores_musicas_album(album)
-        lista_visualizacoes += pegar_visualizacoes_musicas_album(album)
         numero_faixas = len(pegar_letras_musicas_album(album))
         lista_titulo_album += [pegar_titulo_album(album)]*numero_faixas
+
     dados = {'Ano':lista_anos, 'compositores':lista_compositores, 'visualizacoes':lista_visualizacoes, 'letra':lista_letras}
     indice = [lista_titulo_album, lista_titulos]
     df = pd.DataFrame(data=dados, index=indice)
