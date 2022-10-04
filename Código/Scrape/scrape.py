@@ -1,5 +1,9 @@
+from faulthandler import dump_traceback_later
 import pandas as pd
 from bs4 import BeautifulSoup
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+
 import requests
 
 def pegar_html(url: str):
@@ -186,7 +190,7 @@ def pegar_titulo_album(url: str):
     album = soup.find('h1')
 
     titulo_album = album.text
-    return titulo_album.replace(' Album', '')
+    return titulo_album.replace(' Album', '').replace(' [edited]', '')
 
 def pegar_compositores(url: str):
     '''A função recebe um url do site lyrics.com, busca o(s) compositor(es) da música desse desse url
@@ -228,104 +232,101 @@ def pegar_compositores_musicas_album(url: str):
             compositores_album = "https://www.lyrics.com/" + a['href']
             print('procurando compositores no link: ', "https://www.lyrics.com" + a['href'])
             
-            compositores = pegar_compositores(compositores_album)
+            compositores = pegar_compositores(compositores_album).replace('(USA 2) ', '').replace('(usa 2) ', '')
             lista_compositores.append(compositores)
     return lista_compositores
 
-def pegar_link_youtube(url: str):
-    '''A função recebe um url do site lyrics.com, busca o link do youtube da música
-    nesse link e retorna o link
-
-	:param url: Link da página da música
-	:url type: str
-	:return: Link da música no Youtube
-	:rtype: str
-	'''
-
-    soup = BeautifulSoup(pegar_html(url), 'html.parser')
-    views = soup.find('div', class_='youtube-player')['data-id']
-    return views
-
-def pegar_visualizacoes(url: str):
-    '''A função recebe um url do site youtube.com, busca o número de visualizações
-    neste link e o retorna
-
-	:param url: Link do youtube de uma música
-	:url type: str
-	:return: Número de visualizações
-	:rtype: str
-	'''
-
-    soup = BeautifulSoup(pegar_html(url), 'html.parser')
-    try:
-        views = soup.find("meta", itemprop="interactionCount")["content"]
-        return views
-    except:
-        return None
-
-def pegar_visualizacoes_musicas_album(url:str):
-    '''A função recebe um url do site lyrics.com, busca o número de visualizações
-    de todas as músicas desse álbum e retorna uma lista com esses números
-
-	:param url: Link da página do álbum
-	:url type: str
-	:return: Lista com número de visualizações
-	:rtype: list
-	'''
-    soup = BeautifulSoup(pegar_html(url), 'html.parser')
-    album = soup.findAll('table', attrs={'class': 'table tdata'})
-
-    lista_visualizacoes = []
-
-    #dentro do link do album buscaremos todos os links que levam as suas músicas
-    for div in album:
-        links = div.find_all('a')
-        #Ao pegar todos esses links usaremos a função 'pegar_link_youtube' para obter o vídeo no youtube e 'pegar_visualizacoes' para 
-        #pegar as visualizacoes de cada uma das músicas
-        for a in links:
-            links_musicas_album = "https://www.lyrics.com/" + a['href']
-            
-            link = None
-            while link == None:
-                link = pegar_link_youtube(links_musicas_album)
-                print('Pegando link do youtube: ', link)
-            
-            visualizacoes = pegar_visualizacoes('http://youtube.com/watch?v='+link)
-            print('Pegando views no link ', 'http://youtube.com/watch?v='+link)
-            try:
-                lista_visualizacoes.append(visualizacoes)
-            except:
-                lista_visualizacoes.append('None')
-    return lista_visualizacoes
-
-def pegar_duracao_musicas_album(url: str):
-    '''A função recebe um url do site pt.wikipedia.org, busca as durações das músicas
-    do álbum naquele link e retorna uma lista com essas durações
+def pegar_duracao_musicas_album_spotify(spotify_id: str):
+    '''Usando o id de um álbum do spotify a função obtem a duração de todas as músicas
+    desse álbum e retorna uma lista com esses valores
     
-	:param url: Link da página do álbum (wikipédia)
-	:url type: str
-	:return: Lista com a duração das músicas
+	:param spotify_id: Id do álbum do spotify
+	:spotify_id type: str
+	:return: Lista da duração das músicas
 	:rtype: list
     '''
 
-    soup = BeautifulSoup(pegar_html(url), 'html.parser')
-    tabela = soup.find_all('td', style = 'padding-right: 10px; text-align: right; vertical-align: top;')
-    lista_duracoes = []
-    contador = 1
-    for time_stamp in tabela:
-        if contador%2 == 0:
-            lista_duracoes.append(time_stamp.text)
-            contador += 1
-        else:
-            contador += 1
-    return lista_duracoes
+    spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id='1a9faa80969a428cae902caf7caa6402', client_secret='d4ec70ec23114cd8a19b7b4dcf51aa62'))
 
-def pegar_duracao_musicas_banda(url_list: list):
+    results = spotify.album_tracks(spotify_id)
+    tracks = results['items']
+    while results['next']:
+        results = spotify.next(results)
+        tracks.extend(results)
+
+    lista_popularidade = []
+
+    for track in tracks:
+        track_id = track['id']
+        track_page = spotify.track(track_id)
+        duration = track_page['duration_ms']
+        #convertendo milisegundos (dados pelo spotify) em minutos e segundos
+        duration = int(duration)
+        seconds=(duration/1000)%60
+        seconds = int(seconds)
+        minutes=(duration/(1000*60))%60
+        minutes = int(minutes)
+
+        duracao = ("%02d:%02d" % (minutes, seconds))
+        lista_popularidade.append(duracao)
+    return lista_popularidade
+
+def pegar_duracao_musicas_banda(spotify_id_list: list):
+    '''Usando os ids dos álbuns do spotify a função obtem a duração de todas as músicas
+    dos álbuns dados e retorna um dataframe com esses valores
+    
+	:param spotify_id_list: Lista de ids dos álbuns do spotify
+	:spotify_id_list type: list
+	:return: Dataframe da duração das músicas
+	:rtype: DataFrame
+    '''
     lista_duracoes = []
 
-    for album in url_list:
-        lista_duracoes += pegar_duracao_musicas_album(album)
+    for album in spotify_id_list:
+        lista_duracoes += pegar_duracao_musicas_album_spotify(album)
     dados = {'Duração':lista_duracoes}
+    df = pd.DataFrame(data=dados)
+    return df
+
+def pegar_popularidade_album_spotify(spotify_id: str):
+    '''Usando o id de um álbum do spotify a função obtem a popularidade de todas as músicas
+    desse álbum e retorna uma lista com esses valores de popularidade
+    
+	:param spotify_id: Id do álbum do spotify
+	:spotify_id type: str
+	:return: Lista da popularidade das músicas
+	:rtype: list
+    '''
+    spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id='1a9faa80969a428cae902caf7caa6402', client_secret='d4ec70ec23114cd8a19b7b4dcf51aa62'))
+
+    results = spotify.album_tracks(spotify_id)
+    tracks = results['items']
+    while results['next']:
+        results = spotify.next(results)
+        tracks.extend(results)
+
+    lista_popularidade = []
+
+    for track in tracks:
+        track_id = track['id']
+        track_page = spotify.track(track_id)
+        popularity = track_page['popularity']
+        lista_popularidade.append(popularity)
+    return lista_popularidade
+
+def pegar_popularidade_banda_spotify(spotify_id_list: list):
+    '''Usando os ids dos álbuns do spotify a função obtem a popularidade de todas as músicas
+    dos álbuns dados e retorna um dataframe com esses valores de popularidade
+    
+	:param spotify_id_list: Lista de ids dos álbuns do spotify
+	:spotify_id_list type: list
+	:return: Dataframe da popularidade das músicas
+	:rtype: DataFrame
+    '''
+    lista_popularidade_banda = []
+    for spotify_id in spotify_id_list:
+        lista_popularidade_banda += pegar_popularidade_album_spotify(spotify_id)
+    dados = {'Popularidade':lista_popularidade_banda}
     df = pd.DataFrame(data=dados)
     return df
 
@@ -343,8 +344,7 @@ def gerar_dataframe_album(url: str):
     #O conteúdo do dataframe é formado por ano, compositores, visualizações e letra, e seus índices são os títulos das músicas
     dados = {
         'Ano':pegar_ano_musicas_album(url),
-        'Compositores':pegar_compositores_musicas_album(url), 
-        'Visualizações':pegar_visualizacoes_musicas_album(url), 
+        'Compositores':pegar_compositores_musicas_album(url),  
         'Letra':pegar_letras_musicas_album(url)}
 
     df = pd.DataFrame(data=dados, index=[pegar_titulos_musicas_album(url)])
@@ -352,8 +352,7 @@ def gerar_dataframe_album(url: str):
     return df
 
 def gerar_dataframe_banda(url_list: list):
-    '''
-    Usando as funções criadas e recebendo como parâmetro uma lista de links esta
+    '''Usando as funções criadas e recebendo como parâmetro uma lista de links esta
     função obtem um dataframe de uma banda dada a partir de uma lista de urls com
     os seus álbums
     
@@ -368,17 +367,16 @@ def gerar_dataframe_banda(url_list: list):
     lista_anos = []
     lista_compositores = []
     lista_titulo_album = []
-    lista_visualizacoes = []
 
     for album in url_list:
         lista_titulos += pegar_titulos_musicas_album(album)
         lista_letras += pegar_letras_musicas_album(album)
         lista_anos += pegar_ano_musicas_album(album)
         lista_compositores += pegar_compositores_musicas_album(album)
-        lista_visualizacoes += pegar_visualizacoes_musicas_album(album)
         numero_faixas = len(pegar_letras_musicas_album(album))
         lista_titulo_album += [pegar_titulo_album(album)]*numero_faixas
-    dados = {'Ano':lista_anos, 'compositores':lista_compositores, 'visualizacoes':lista_visualizacoes, 'letra':lista_letras}
+
+    dados = {'Ano':lista_anos, 'compositores':lista_compositores, 'letra':lista_letras}
     indice = [lista_titulo_album, lista_titulos]
     df = pd.DataFrame(data=dados, index=indice)
     return df
