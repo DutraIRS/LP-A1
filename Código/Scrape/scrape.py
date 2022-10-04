@@ -237,12 +237,12 @@ def pegar_compositores_musicas_album(url: str):
     return lista_compositores
 
 def pegar_duracao_musicas_album_spotify(spotify_id: str):
-    '''A função recebe um url do site pt.wikipedia.org, busca as durações das músicas
-    do álbum naquele link e retorna uma lista com essas durações
+    '''Usando o id de um álbum do spotify a função obtem a duração de todas as músicas
+    desse álbum e retorna uma lista com esses valores
     
-	:param url: Link da página do álbum (wikipédia)
-	:url type: str
-	:return: Lista com a duração das músicas
+	:param spotify_id: Id do álbum do spotify
+	:spotify_id type: str
+	:return: Lista da duração das músicas
 	:rtype: list
     '''
 
@@ -272,12 +272,12 @@ def pegar_duracao_musicas_album_spotify(spotify_id: str):
     return lista_popularidade
 
 def pegar_duracao_musicas_banda(spotify_id_list: list):
-    '''Usando os ids dos álbuns do spotify a função obtem a popularidade de todas as músicas
-    dos álbuns dados e retorna um dataframe com esses valores de popularidade
+    '''Usando os ids dos álbuns do spotify a função obtem a duração de todas as músicas
+    dos álbuns dados e retorna um dataframe com esses valores
     
 	:param spotify_id_list: Lista de ids dos álbuns do spotify
 	:spotify_id_list type: list
-	:return: Dataframe da popularidade das músicas
+	:return: Dataframe da duração das músicas
 	:rtype: DataFrame
     '''
     lista_duracoes = []
@@ -292,7 +292,7 @@ def pegar_popularidade_album_spotify(spotify_id: str):
     '''Usando o id de um álbum do spotify a função obtem a popularidade de todas as músicas
     desse álbum e retorna uma lista com esses valores de popularidade
     
-	:param spotify_id: Ids do álbum do spotify
+	:param spotify_id: Id do álbum do spotify
 	:spotify_id type: str
 	:return: Lista da popularidade das músicas
 	:rtype: list
