@@ -3,6 +3,11 @@ import wordcloud as wc
 import numpy as np
 import PIL
 import re
+import os
+import ntpath
+
+head, tail = ntpath.split(os.path.realpath(__file__))
+os.chdir(head)
 
 def criar_dic_freq(text: str, ignore: str):
     '''
@@ -11,7 +16,7 @@ def criar_dic_freq(text: str, ignore: str):
     seu valor em um dicionário, atribuindo valor zero se não for encontrada no dicionário.
     Por fim, 1 é adicionado ao valor, que representa a frequência absoluta da palavra no arquivo.
 
-    :param text: Path para o texto-base para o WordCloud
+    :param text: Texto-base para o WordCloud
     :text type: str
     :param ignore: Palavras a ignorar formatadas de maneira adequada para regex
     :ignore type: str
@@ -27,11 +32,10 @@ def criar_dic_freq(text: str, ignore: str):
         if re.match(ignore, word):
             continue
 
-        val = dic.get(word, 0)
+        val = dic.get(word.lower(), 0)
         dic[word.lower()] = val + 1
 
     return dic
-
 
 def criar_imagem(mask, dic, name):
     '''
@@ -49,15 +53,15 @@ def criar_imagem(mask, dic, name):
     '''
     cloud_mask = np.array(PIL.Image.open(mask))
 
-    cloud = wc.WordCloud(background_color="white", max_words=1000, mask=cloud_mask)
+    cloud = wc.WordCloud(background_color="white", max_words=100, mask=cloud_mask)
     cloud = cloud.generate_from_frequencies(dic)
-    
+
     fig = np.array(cloud)
     fig[fig != 255] = 0
 
     plt.imshow(fig, interpolation="nearest")
     plt.axis("off")
-    plt.savefig(name + '.png')
+    plt.savefig(name + '.png', dpi=1200)
 
 ####################################
 
