@@ -370,7 +370,7 @@ def pegar_popularidade_banda_spotify(spotify_id_list: list):
         lista_popularidade_banda += pegar_popularidade_album_spotify(spotify_id)
     dados = {'Popularidade':lista_popularidade_banda}
     df = pd.DataFrame(data=dados)
-    return lista_popularidade_banda
+    return df
 
 
 def gerar_dataframe_album(url: str):

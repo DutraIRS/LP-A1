@@ -16,31 +16,15 @@ import pandas as pd
 df.to_csv('music_bruto.csv')'''
 
 #Após a limpeza do dataframe anexaremos também a duração das músicas e sua popularidade
-df = pd.read_csv(r'/Dataframes/music.csv')
+df1 = pd.read_csv(r'D:/Downloads/LP-A1/Código/Scrape/Dataframes/music_limpeza.csv')
+
+#Duração das músicas dos álbuns da banda
+df2 = sp.pegar_duracao_musicas_banda(['3I9Z1nDCL4E0cP62flcbI5','1RCAG3LrDwYsNU5ZiUJlWi','0CxPbTRARqKUYighiEY9Sz','00eiw4KOJZ7eC3NBEpmH4C','4ieR19hRkKeE81CalJPQNu','0suNLpB9xraAv1FcdlITjQ'])
+#Popularidade de cada música dos álbuns da banda
+df3 = sp.pegar_popularidade_banda_spotify(['3I9Z1nDCL4E0cP62flcbI5','1RCAG3LrDwYsNU5ZiUJlWi','0CxPbTRARqKUYighiEY9Sz','00eiw4KOJZ7eC3NBEpmH4C','4ieR19hRkKeE81CalJPQNu','0suNLpB9xraAv1FcdlITjQ'])
+
+df = pd.concat([df1, df2, df3], axis=1, join='inner')
+df = df.rename({'Unnamed: 0': 'Álbum', 'Unnamed: 1': 'Faixas'}, axis=1)
+df = df.set_index(['Álbum', 'Faixas'], drop=True)
 print(df)
-#df1 = pd.read_csv(r'/Dataframe/data.csv')
-#df2 = sp.pegar_duracao_musicas_banda(['3I9Z1nDCL4E0cP62flcbI5','1RCAG3LrDwYsNU5ZiUJlWi','0CxPbTRARqKUYighiEY9Sz','00eiw4KOJZ7eC3NBEpmH4C','4ieR19hRkKeE81CalJPQNu','0suNLpB9xraAv1FcdlITjQ'])
-
-'''df2 = sp.pegar_duracao_musicas_banda([
-    'https://pt.wikipedia.org/wiki/Appetite_for_Destruction',
-    'https://pt.wikipedia.org/wiki/G_N%27_R_Lies',
-    'https://pt.wikipedia.org/wiki/Use_Your_Illusion_I',
-    'https://pt.wikipedia.org/wiki/Use_Your_Illusion_II',
-    'https://pt.wikipedia.org/wiki/The_Spaghetti_Incident%3F',
-    'https://pt.wikipedia.org/wiki/Chinese_Democracy'])
-
-df = pd.read_csv(r'D:\Downloads\LP-A1\A1\music_semduracao.csv')
-
-df3 = pd.concat([df, df2], axis=1, join='inner')
-df3 = df3.set_index(['Unnamed: 0', 'Unnamed: 1'])
-df3.to_csv('music.csv')'''
-
-#print(sp.pegar_popularidade_album_spotify('3I9Z1nDCL4E0cP62flcbI5'))
-#print(len(sp.pegar_popularidade_banda_spotify(['3I9Z1nDCL4E0cP62flcbI5','1RCAG3LrDwYsNU5ZiUJlWi','0CxPbTRARqKUYighiEY9Sz','00eiw4KOJZ7eC3NBEpmH4C','4ieR19hRkKeE81CalJPQNu','0suNLpB9xraAv1FcdlITjQ'])))
-
-#print(sp.pegar_visualizacoes('http://youtube.com/watch?v=1w7OgIMMRc4'))
-#print(sp.pegar_link_youtube('https://www.lyrics.com/lyric/668824/Welcome+to+the+Jungle'))
-#print(sp.pegar_visualizacoes_musicas_album('https://www.lyrics.com/album/8763/Appetite-for-Destruction-%5BEdited%5D'))
-
-#print(sp.pegar_compositores('https://www.lyrics.com/lyric/35131103/Guns+N%27+Roses/Down+on+the+Farm'))
-#print(sp.pegar_compositores_musicas_album('https://www.lyrics.com/album/8763/Appetite-for-Destruction-%5BEdited%5D'))
+df.to_csv(r'D:/Downloads/LP-A1/Código/Scrape/Dataframes/music.csv')
