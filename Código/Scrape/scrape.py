@@ -1,3 +1,4 @@
+from faulthandler import dump_traceback_later
 import pandas as pd
 from bs4 import BeautifulSoup
 import spotipy
@@ -301,7 +302,7 @@ def pegar_visualizacoes_musicas_album(url:str):
                 lista_visualizacoes.append('None')
     return lista_visualizacoes
 
-def pegar_duracao_musicas_album(url: str):
+def pegar_duracao_musicas_album_spotify(spotify_id: str):
     '''A função recebe um url do site pt.wikipedia.org, busca as durações das músicas
     do álbum naquele link e retorna uma lista com essas durações
     
@@ -311,23 +312,36 @@ def pegar_duracao_musicas_album(url: str):
 	:rtype: list
     '''
 
-    soup = BeautifulSoup(pegar_html(url), 'html.parser')
-    tabela = soup.find_all('td', style = 'padding-right: 10px; text-align: right; vertical-align: top;')
-    lista_duracoes = []
-    contador = 1
-    for time_stamp in tabela:
-        if contador%2 == 0:
-            lista_duracoes.append(time_stamp.text)
-            contador += 1
-        else:
-            contador += 1
-    return lista_duracoes
+    spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id='1a9faa80969a428cae902caf7caa6402', client_secret='d4ec70ec23114cd8a19b7b4dcf51aa62'))
 
-def pegar_duracao_musicas_banda(url_list: list):
+    results = spotify.album_tracks(spotify_id)
+    tracks = results['items']
+    while results['next']:
+        results = spotify.next(results)
+        tracks.extend(results)
+
+    lista_popularidade = []
+
+    for track in tracks:
+        track_id = track['id']
+        track_page = spotify.track(track_id)
+        duration = track_page['duration_ms']
+        #convertendo milisegundos (dados pelo spotify) em minutos e segundos
+        duration = int(duration)
+        seconds=(duration/1000)%60
+        seconds = int(seconds)
+        minutes=(duration/(1000*60))%60
+        minutes = int(minutes)
+
+        duracao = ("%02d:%02d" % (minutes, seconds))
+        lista_popularidade.append(duracao)
+    return lista_popularidade
+
+def pegar_duracao_musicas_banda(spotify_id_list: list):
     lista_duracoes = []
 
-    for album in url_list:
-        lista_duracoes += pegar_duracao_musicas_album(album)
+    for album in spotify_id_list:
+        lista_duracoes += pegar_duracao_musicas_album_spotify(album)
     dados = {'Duração':lista_duracoes}
     df = pd.DataFrame(data=dados)
     return df
@@ -354,6 +368,8 @@ def pegar_popularidade_banda_spotify(spotify_id_list: list):
     lista_popularidade_banda = []
     for spotify_id in spotify_id_list:
         lista_popularidade_banda += pegar_popularidade_album_spotify(spotify_id)
+    dados = {'Popularidade':lista_popularidade_banda}
+    df = pd.DataFrame(data=dados)
     return lista_popularidade_banda
 
 
@@ -404,7 +420,7 @@ def gerar_dataframe_banda(url_list: list):
         numero_faixas = len(pegar_letras_musicas_album(album))
         lista_titulo_album += [pegar_titulo_album(album)]*numero_faixas
 
-    dados = {'Ano':lista_anos, 'compositores':lista_compositores, 'visualizacoes':lista_visualizacoes, 'letra':lista_letras}
+    dados = {'Ano':lista_anos, 'compositores':lista_compositores, 'letra':lista_letras}
     indice = [lista_titulo_album, lista_titulos]
     df = pd.DataFrame(data=dados, index=indice)
     return df
