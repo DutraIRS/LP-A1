@@ -23,12 +23,10 @@ def criar_dic_freq(text: str, ignore: str):
     :return: Dicionário de cada palavra (fora as previamente excluídas) e suas contagens
     :r type: dict
     '''
-    file = open(text, encoding='utf-8')
-    file = file.read()
 
     dic = {}
 
-    for word in file.split(" "):
+    for word in text.split(" "):
         if re.match(ignore, word):
             continue
 
@@ -61,7 +59,7 @@ def criar_imagem(mask, dic, name):
 
     plt.imshow(fig, interpolation="nearest")
     plt.axis("off")
-    plt.savefig(name + '.png', dpi=1200)
+    plt.savefig(name + '.png', dpi=600)
 
 ####################################
 
