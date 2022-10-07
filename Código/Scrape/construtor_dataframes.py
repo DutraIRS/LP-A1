@@ -1,11 +1,17 @@
 import scrape as sp
 import pandas as pd
+import os
+import ntpath
 
 #O site escolhido para a obtenção das letras e o site usado para verificar a popularidade e a duração das músicas têm divergências
 #Há diferença de número de músicas e ordem das músicas no album, Obteremos então as letras, os compositores, o ano de lançamento
 #e os títulos das músicas, usando a função 'gerar_dataframe_banda', salvaremos o Dataframe em um arquivo CSV e faremos a limpeza
 
 if __name__ == "__main__":
+
+    head, tail = ntpath.split(os.path.realpath(__file__))
+    os.chdir(head)
+    
     df = sp.gerar_dataframe_banda([
     'https://www.lyrics.com/album/8763/Appetite-for-Destruction-%5BEdited%5D',
     'https://www.lyrics.com/album/8760/G-N%27-R-Lies',
@@ -13,10 +19,10 @@ if __name__ == "__main__":
     'https://www.lyrics.com/album/8762/Use-Your-Illusion-II', 
     'https://www.lyrics.com/album/188450/The-Spaghetti-Incident%3F', 
     'https://www.lyrics.com/album/1730175/Chinese-Democracy'])
-    df.to_csv('music_bruto.csv')
+    df.to_csv('Dataframes/music_bruto.csv')
 
     #Após a limpeza do dataframe anexaremos também a duração das músicas e sua popularidade
-    df1 = pd.read_csv(r'D:/Downloads/LP-A1/Código/Scrape/Dataframes/music_limpeza.csv')
+    df1 = pd.read_csv('Dataframes/music_limpeza.csv')
 
     #Duração das músicas dos álbuns da banda
     df2 = sp.pegar_duracao_musicas_banda(['3I9Z1nDCL4E0cP62flcbI5','1RCAG3LrDwYsNU5ZiUJlWi','0CxPbTRARqKUYighiEY9Sz','00eiw4KOJZ7eC3NBEpmH4C','4ieR19hRkKeE81CalJPQNu','0suNLpB9xraAv1FcdlITjQ'])
@@ -27,4 +33,4 @@ if __name__ == "__main__":
     df = df.rename({'Unnamed: 0': 'Álbum', 'Unnamed: 1': 'Faixas'}, axis=1)
     df = df.set_index(['Álbum', 'Faixas'], drop=True)
     print(df)
-    df.to_csv(r'D:/Downloads/LP-A1/Código/Scrape/Dataframes/music.csv')
+    df.to_csv('Dataframes/music.csv')
