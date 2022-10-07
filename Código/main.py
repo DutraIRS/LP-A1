@@ -15,10 +15,6 @@ sys.path.insert(0, './Wordclouds')
 import scrape as sp
 import wordclouds as wcs
 
-#Sim, é preciso repetir o código (algum bug no VSCode)
-head, tail = ntpath.split(os.path.realpath(__file__))
-os.chdir(head)
-
 music_df = pd.read_csv('Scrape/Dataframes/music.csv')
 
 print('Grupo de Perguntas 1:')
