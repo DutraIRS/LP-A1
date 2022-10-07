@@ -1,10 +1,10 @@
 import scrape
-from bs4 import BeautifulSoup
+import bs4
 import pandas as pd
 import re
 
 
-def obtem_span_premios(url):
+def obtem_span_premios(url: str):
     """Obtém a tag span que contém o título da seção de prêmios da Wikipedia
 
     :param url: URL da página da Wikipedia em que a tag será buscada
@@ -13,12 +13,12 @@ def obtem_span_premios(url):
     :rtype: bs4.element.Tag/None
     """
     site = scrape.pegar_html(url)
-    bs = BeautifulSoup(site, 'html.parser')
+    bs = bs4.BeautifulSoup(site, 'html.parser')
 
     return bs.find(id="Awards_and_nominations")
 
 
-def ler_premiacao(tag_li):
+def ler_premiacao(tag_li: bs4.element.Tag):
     """Obtém descrição, premiado e ano de premiação de uma tag li da Wikipedia
 
     :param tag_li: Tag li que contém as informações da premiação
@@ -45,7 +45,7 @@ def ler_premiacao(tag_li):
     return [descricao, premiado, ano]
 
 
-def obtem_premiacoes(url):
+def obtem_premiacoes(url: str):
     """Obtém as premiações da banda Guns N' Roses da Wikipedia
 
     :param url: URL da Wikipedia em que as premiações serão buscadas
