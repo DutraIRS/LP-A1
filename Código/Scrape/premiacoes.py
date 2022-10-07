@@ -4,7 +4,7 @@ import pandas as pd
 import re
 
 def obtem_span_premios(url):
-    """Obtém a tag span que contém o título da seção de prêmios
+    """Obtém a tag span que contém o título da seção de prêmios da Wikipedia
 
     :param url: URL do site em que a tag será buscada
     :type url: str
@@ -17,7 +17,7 @@ def obtem_span_premios(url):
     return bs.find(id = "Awards_and_nominations")
 
 def obtem_premiacoes(url):
-    """Obtém as premiações da banda Guns N' Roses de um site
+    """Obtém as premiações da banda Guns N' Roses da Wikipedia
 
     :param url: URL do site em que as premiações serão buscadas
     :type url: str
