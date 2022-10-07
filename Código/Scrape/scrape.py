@@ -1,9 +1,7 @@
-from faulthandler import dump_traceback_later
 import pandas as pd
 from bs4 import BeautifulSoup
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-
 import requests
 
 def pegar_html(url: str):
@@ -260,14 +258,9 @@ def pegar_duracao_musicas_album_spotify(spotify_id: str):
         track_id = track['id']
         track_page = spotify.track(track_id)
         duration = track_page['duration_ms']
-        #convertendo milisegundos (dados pelo spotify) em minutos e segundos
+        #convertendo milisegundos (dados pelo spotify) em segundos
         duration = int(duration)
-        seconds=(duration/1000)%60
-        seconds = int(seconds)
-        minutes=(duration/(1000*60))%60
-        minutes = int(minutes)
-
-        duracao = ("%02d:%02d" % (minutes, seconds))
+        duracao = duration/1000
         lista_popularidade.append(duracao)
     return lista_popularidade
 
