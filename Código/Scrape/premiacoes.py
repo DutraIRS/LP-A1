@@ -79,3 +79,9 @@ def obtem_premiacoes(url: str):
     colunas = ["Nome Premiação", "Descrição", "Premiado", "Ano"]
 
     return pd.DataFrame(data=dados, columns=colunas)
+
+
+if __name__ == "__main__":
+    df = obtem_premiacoes("https://en.wikipedia.org/wiki/Guns_N%27_Roses")
+
+    df.to_csv("Código/Scrape/Dataframes/premiacoes.csv")
