@@ -172,6 +172,30 @@ if __name__ == "__main__":
 
     print('O título de um álbum é tema recorrente nas letras?\n')
 
+    albums = music_df['Álbum'].unique()
+    dados = []
+
+    for album in albums:
+        mascara_album = music_df['Álbum'] == album
+        musicas = music_df[mascara_album]
+
+        letras = pd.Series(' '.join(musicas['letra']).title().split())
+        palavras_freq = letras.value_counts()
+        mascara = palavras_freq.index.isin(album.title().split())
+        freq_titulo_letras = palavras_freq[mascara].sum()
+
+        dados.append([album, freq_titulo_letras])
+    
+    freq_titulo = pd.DataFrame(data=dados, columns=['Álbum', 'Frequência'])
+    
+    print('Frequência dos títulos dos álbuns nas letras:')
+    print(freq_titulo.to_string(index=False))
+
+    mascara_recorrente = freq_titulo['Frequência'] > 40
+
+    print('\nForam considerados temas recorrentes nas letras os títulos dos álbuns:')
+    print(freq_titulo[mascara_recorrente]['Álbum'].to_string(index=False))
+
     print('\n', '#'*42, '\n', sep='')
 
     print('O título de uma música é tema recorrente nas letras?\n')
