@@ -148,6 +148,19 @@ if __name__ == "__main__":
 
     print('Quais são as palavras mais comuns nas letras das músicas, por Álbum?\n')
 
+    albums = music_df['Álbum'].unique()
+
+    for album in albums:
+        mascara_album = music_df['Álbum'] == album
+        musicas = music_df[mascara_album]
+
+        letras = pd.Series(' '.join(musicas['letra']).split())
+        print(album, ':', sep='')
+        print(letras.value_counts()[:3].to_string())
+        print()
+
+    print('\n', '#'*42, '\n', sep='')
+
     print('Quais são as palavras mais comuns nas letras das músicas, em toda a discografia?\n')
 
     print('\n', '#'*42, '\n', sep='')
