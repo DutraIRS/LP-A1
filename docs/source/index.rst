@@ -11,5 +11,6 @@ Conteúdo
 
 .. toctree::
    
-   web_scraper
-   wordcloud
+   scrape
+   premiacoes
+   wordclouds

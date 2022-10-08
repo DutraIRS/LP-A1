@@ -5,8 +5,8 @@
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath("../../Código/"))
-sys.path.insert(0, os.path.abspath("../../Código/wordcloud/"))
+sys.path.insert(0, os.path.abspath("../../Código/Scrape/"))
+sys.path.insert(0, os.path.abspath("../../Código/Wordclouds/"))
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
