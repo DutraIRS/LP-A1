@@ -279,6 +279,8 @@ if __name__ == "__main__":
 
     print('Ano em que a banda recebeu mais prêmios.\n')
 
+    print(premiacoes_df['Ano'].value_counts().index[0])
+
     print('\n', '#'*42, '\n', '#'*42, '\n', sep='')
 
     print('Visualizações')
