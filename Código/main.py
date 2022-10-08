@@ -200,6 +200,26 @@ if __name__ == "__main__":
 
     print('O título de uma música é tema recorrente nas letras?\n')
 
+    dados = []
+
+    for indice, linha in music_df.iterrows():
+        letras = pd.Series(linha['letra'].title().split())
+        palavras_freq = letras.value_counts()
+        mascara = palavras_freq.index.isin(linha['Faixas'].title().split())
+        freq_titulo_letras = palavras_freq[mascara].sum()
+
+        dados.append([linha['Faixas'], freq_titulo_letras])
+
+    freq_titulo_musica = pd.DataFrame(data=dados, columns=['Música', 'Frequência'])
+
+    print('Frequência dos títulos das músicas nas letras:')
+    print(freq_titulo_musica.to_string(index=False))
+
+    mascara_recorrente = freq_titulo_musica['Frequência'] > 60
+
+    print('\nForam considerados temas recorrentes nas letras os títulos das músicas:')
+    print(freq_titulo_musica[mascara_recorrente]['Música'].to_string(index=False))
+
     print('\n', '#'*42, '\n', '#'*42, '\n', sep='')
 
     print('Grupo de Perguntas 3:\n')
