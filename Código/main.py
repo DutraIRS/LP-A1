@@ -224,7 +224,7 @@ if __name__ == "__main__":
 
     print('Grupo de Perguntas 3:\n')
 
-    print('Compositor (não integrante da banda) mais comum;\n')
+    print('Compositores mais comuns;\n')
 
     print('\n', '#'*42, '\n', sep='')
 
