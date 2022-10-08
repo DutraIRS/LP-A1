@@ -32,7 +32,7 @@ def ler_premiacao(tag_li: bs4.element.Tag):
     ano, info = texto.split(":")
 
     # A descrição é separada do premiado por hífen
-    separado = re.split("-|–", info)
+    separado = re.split("- |– ", info)
     descricao = separado[0].strip()
 
     if len(separado) > 1:
