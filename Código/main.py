@@ -65,6 +65,14 @@ if __name__ == "__main__":
     print('As músicas mais curtas da história da banda são:\n' + result['Faixas'][0] + ', ' + result['Faixas'][1] + ', ' + result['Faixas'][2] + '\n\n', '#'*42,'\n', sep='')
 
     print('Álbuns mais premiados [https://twiftnews.com/lifestyle/top-6-most-prestigious-music-awards/]\n')
+    premiacoes_df = pd.read_csv('Scrape/Dataframes/premiacoes.csv', index_col=0)
+    count_premios = premiacoes_df['Premiado'].value_counts()
+    mascara_albums = count_premios.index.isin(music_df["Álbum"])
+    albums_premiados = count_premios[mascara_albums]
+    print('Os álbums mais premiados são:')
+    print(albums_premiados[:3].to_string())
+
+    print('\n', '#'*42, '\n', sep='')
 
     print('Existe alguma relação entre a duração da música e sua popularidade?\n')
     r2 = round(stats.pearsonr(music_df['Duração'], music_df['Popularidade'])[0] ** 2, 2)
