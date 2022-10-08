@@ -254,6 +254,26 @@ if __name__ == "__main__":
     print('\n', '#'*42, '\n', sep='')
 
     print('Música mais popular por compositor;\n')
+    print('Foram considerados apenas os compositores com pelo menos 5 músicas:')
+
+    dados = []
+
+    for indice, linha in music_df.iterrows():
+        compositores = linha['compositores'].title().split(', ')
+        popularidade = linha['Popularidade']
+        musica = linha['Faixas']
+
+        for compositor in compositores:
+            dados.append([compositor, musica, popularidade])
+    
+    colunas = ['Compositor', 'Música', 'Popularidade']
+    compositor_pop = pd.DataFrame(data=dados, columns=colunas)
+
+    for compositor in compositores_count[compositores_count['Frequência'] >= 5]['Compositor']:
+        musicas_comp = compositor_pop[compositor_pop['Compositor'] == compositor]
+
+        musica = musicas_comp.loc[musicas_comp['Popularidade'].idxmax()]['Música']
+        print(compositor, ': ', musica, sep='')
 
     print('\n', '#'*42, '\n', sep='')
 
