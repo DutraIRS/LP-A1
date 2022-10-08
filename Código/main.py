@@ -226,6 +226,31 @@ if __name__ == "__main__":
 
     print('Compositores mais comuns;\n')
 
+    compositores = pd.Series(', '.join(music_df['compositores']).title().split(', '))
+    compositores_count = compositores.value_counts()
+    compositores_count = compositores_count.reset_index()
+    dados = []
+
+    while compositores_count.size > 0:
+        compositor = compositores_count.iloc[0]['index']
+        nomes = compositor.split()
+
+        mascara = pd.Series(False, index=compositores_count.index)
+        for nome in nomes:
+            mascara_nome = compositores_count['index'].str.contains(nome, regex=False)
+            mascara = mascara | mascara_nome
+        
+        soma = compositores_count[mascara][0].sum()
+
+        dados.append([compositor, soma])
+
+        compositores_count = compositores_count[~ mascara]
+    
+    compositores_count = pd.DataFrame(data=dados, columns=['Compositor', 'Frequência'])
+    compositores_count.sort_values('Frequência', ascending=False, inplace=True)
+
+    print(compositores_count['Compositor'][:3].to_string(index=False))
+    
     print('\n', '#'*42, '\n', sep='')
 
     print('Música mais popular por compositor;\n')
