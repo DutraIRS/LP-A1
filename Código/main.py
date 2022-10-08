@@ -156,7 +156,7 @@ if __name__ == "__main__":
 
         letras = pd.Series(' '.join(musicas['letra']).split())
         print(album, ':', sep='')
-        print(letras.value_counts()[:3].to_string())
+        print(letras.str.capitalize().value_counts()[:3].to_string())
         print()
 
     print('\n', '#'*42, '\n', sep='')
