@@ -163,6 +163,11 @@ if __name__ == "__main__":
 
     print('Quais são as palavras mais comuns nas letras das músicas, em toda a discografia?\n')
 
+    palavras = pd.Series(' '.join(music_df['letra']).split())
+    palavras_freq = palavras.str.capitalize().value_counts()
+    print('Palavras mais comuns:')
+    print(palavras_freq[:10].to_string())
+
     print('\n', '#'*42, '\n', sep='')
 
     print('O título de um álbum é tema recorrente nas letras?\n')
