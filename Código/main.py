@@ -292,7 +292,7 @@ if __name__ == "__main__":
         subdf = music_df[music_df['Álbum'] == album]
         sorted = subdf.sort_values(by='Popularidade', ascending=False)
         sns.barplot(sorted, x='Popularidade', y='Faixas')
-        plt.savefig('../Figuras/Figura 4' + chr(ord('@') + i) + ' - Gráfico de Barras da Popularidade para o Álbum ' + str(album), dpi = 600)
+        plt.savefig('../Figuras/Figura 4' + chr(ord('@') + i) + ' - Gráfico de Barras da Popularidade para o Álbum ' + str(album.replace('?','')), dpi = 600)
         plt.clf()
         i += 1
 
@@ -307,7 +307,7 @@ if __name__ == "__main__":
         subdf = music_df[music_df['Álbum'] == album]
         sorted = subdf.sort_values(by='Duração', ascending=False)
         sns.barplot(sorted, x='Duração', y='Faixas')
-        plt.savefig('../Figuras/Figura 5' + chr(ord('@') + i) + ' - Gráfico de Barras da Duração para o Álbum ' + str(album), dpi = 600)
+        plt.savefig('../Figuras/Figura 5' + chr(ord('@') + i) + ' - Gráfico de Barras da Duração para o Álbum ' + str(album.replace('?','')), dpi = 600)
         plt.clf()
         i += 1
 
