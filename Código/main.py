@@ -226,7 +226,7 @@ if __name__ == "__main__":
 
     print('Grupo de Perguntas 3:\n')
 
-    print('Compositores mais comuns;\n')
+    print('Compositores mais comuns\n')
 
     compositores = pd.Series(', '.join(music_df['compositores']).title().split(', '))
     compositores_count = compositores.value_counts()
@@ -251,11 +251,11 @@ if __name__ == "__main__":
     compositores_count = pd.DataFrame(data=dados, columns=['Compositor', 'Frequência'])
     compositores_count.sort_values('Frequência', ascending=False, inplace=True)
 
-    print(compositores_count['Compositor'][:3].to_string(index=False))
+    print(compositores_count['Compositor'].iloc[:3].to_string(index=False))
     
     print('\n', '#'*42, '\n', sep='')
 
-    print('Música mais popular por compositor;\n')
+    print('Música mais popular por compositor\n')
     print('Foram considerados apenas os compositores com pelo menos 5 músicas:')
 
     dados = []
@@ -279,19 +279,37 @@ if __name__ == "__main__":
 
     print('\n', '#'*42, '\n', sep='')
 
-    print('Ano em que a banda recebeu mais prêmios.\n')
+    print('Ano em que a banda recebeu mais prêmios\n')
 
     print(premiacoes_df['Ano'].value_counts().index[0])
 
     print('\n', '#'*42, '\n', '#'*42, '\n', sep='')
-
+        
     print('Visualizações')
 
-    print('Confira as Figura 4A a 4F')
+    i = 1
+    for album in music_df['Álbum'].unique():
+        subdf = music_df[music_df['Álbum'] == album]
+        sorted = subdf.sort_values(by='Popularidade', ascending=False)
+        sns.barplot(sorted, x='Popularidade', y='Faixas')
+        plt.savefig('../Figuras/Figura 4' + chr(ord('@') + i) + ' - Gráfico de Barras da Popularidade para o Álbum ' + str(album), dpi = 600)
+        plt.clf()
+        i += 1
+
+    print('Confira as Figuras 4A a 4F')
 
     print('\n', '#'*42, '\n', sep='')
 
-    print('Confira as Figura 5A a 5F')
+    print('Confira as Figuras 5A a 5F')
+
+    i = 1
+    for album in music_df['Álbum'].unique():
+        subdf = music_df[music_df['Álbum'] == album]
+        sorted = subdf.sort_values(by='Duração', ascending=False)
+        sns.barplot(sorted, x='Duração', y='Faixas')
+        plt.savefig('../Figuras/Figura 5' + chr(ord('@') + i) + ' - Gráfico de Barras da Duração para o Álbum ' + str(album), dpi = 600)
+        plt.clf()
+        i += 1
 
     print('\n', '#'*42, '\n', sep='')
 
@@ -312,6 +330,12 @@ if __name__ == "__main__":
     print('Confira a Figura 7')
 
     print('\n', '#'*42, '\n', sep='')
+
+    data = {'Álbum': 'Appetite for Destruction', 'Premiações': 1}
+    albums_premiados = pd.DataFrame(data = data, index=[0])
+    sns.barplot(albums_premiados, x='Premiações', y='Álbum')
+    plt.savefig('../Figuras/Figura 8 - Gráfico de Barras dos Álbuns Premiados', dpi = 600)
+    plt.clf()
 
     print('Confira a Figura 8')
 
