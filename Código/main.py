@@ -7,6 +7,8 @@ from scipy import stats
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
+    sns.set(font_scale=0.3)
+    
     head, tail = ntpath.split(os.path.realpath(__file__))
     os.chdir(head)
 
