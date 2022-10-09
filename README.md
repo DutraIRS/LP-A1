@@ -12,7 +12,7 @@ Durante a pesquisa inicial, descobrimos que a banda possui 6 álbuns gravados em
 
 Para o grupo 3 de perguntas, escolhemos as seguintes:
 <ol>
-	<li>Compositor (não integrante da banda) mais comum;</li>
+	<li>Compositores mais comuns;</li>
 	<li>Música mais popular por compositor;</li>
 	<li>Ano em que a banda recebeu mais prêmios.</li>
 </ol>

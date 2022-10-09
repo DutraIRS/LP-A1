@@ -6,9 +6,6 @@ import re
 import os
 import ntpath
 
-head, tail = ntpath.split(os.path.realpath(__file__))
-os.chdir(head)
-
 def criar_dic_freq(text: str, ignore: str):
     '''
     A função recebe uma string com o texto a ser avaliado e, para cada palavra no texto,
@@ -61,7 +58,10 @@ def criar_imagem(mask, dic, name):
     plt.axis("off")
     plt.savefig(name + '.png', dpi=600)
 
-####################################
 
-#dic_freq = criar_dic_freq('guns.txt', "a|the|an|the|to|in|for|of|or|by|with|is|on|that|be")
-#criar_imagem("../../Figuras/guns_mask.png", dic_freq, '../../Figuras/guns')
+if __name__ == "__main__":
+    head, tail = ntpath.split(os.path.realpath(__file__))
+    os.chdir(head)
+
+    dic_freq = criar_dic_freq('guns.txt', "a|the|an|the|to|in|for|of|or|by|with|is|on|that|be")
+    criar_imagem("../../Figuras/guns_mask.png", dic_freq, '../../Figuras/guns')
