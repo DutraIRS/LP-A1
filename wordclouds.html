@@ -72,6 +72,62 @@
 <h1>Word Cloud<a class="headerlink" href="#word-cloud" title="Link permanente para este título">¶</a></h1>
 <div class="section" id="funcoes">
 <h2>Funções<a class="headerlink" href="#funcoes" title="Link permanente para este título">¶</a></h2>
+<dl class="function">
+<dt id="wordclouds.criar_dic_freq">
+<code class="sig-prename descclassname">wordclouds.</code><code class="sig-name descname">criar_dic_freq</code><span class="sig-paren">(</span><em class="sig-param">text: str</em>, <em class="sig-param">ignore: str</em><span class="sig-paren">)</span><a class="headerlink" href="#wordclouds.criar_dic_freq" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>A função recebe uma string com o texto a ser avaliado e, para cada palavra no texto,
+testa se ela está na lista de palavras a serem desconsideradas. Caso não esteja, procura
+seu valor em um dicionário, atribuindo valor zero se não for encontrada no dicionário.
+Por fim, 1 é adicionado ao valor, que representa a frequência absoluta da palavra no arquivo.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parâmetros</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – Texto-base para o WordCloud</p></li>
+<li><p><strong>ignore</strong> – Palavras a ignorar formatadas de maneira adequada para regex</p></li>
+</ul>
+</dd>
+<dt class="field-even">Text type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">Ignore type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Retorna</dt>
+<dd class="field-even"><p>Dicionário de cada palavra (fora as previamente excluídas) e suas contagens</p>
+</dd>
+<dt class="field-odd">R type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="wordclouds.criar_imagem">
+<code class="sig-prename descclassname">wordclouds.</code><code class="sig-name descname">criar_imagem</code><span class="sig-paren">(</span><em class="sig-param">mask</em>, <em class="sig-param">dic</em>, <em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#wordclouds.criar_imagem" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Recebe uma imagem máscara, um dicionário de frequências e um nome para o output.
+Traduz a máscara para um array NumPy, gera a WordCloud com até 1000 palavras mais frequentes.
+Traduz a imagem de volta para array para transformar todas as cores (além do branco) em preto.
+Gera a figura com o matplotlib.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parâmetros</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mask</strong> – Nome do arquivo que será a imagem máscara</p></li>
+<li><p><strong>dic</strong> – Dicionário de frequências das palavras</p></li>
+<li><p><strong>name</strong> – Nome do arquivo que será gerado</p></li>
+</ul>
+</dd>
+<dt class="field-even">Mask type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">Dic type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Name type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 </div>
 

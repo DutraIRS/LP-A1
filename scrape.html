@@ -18,7 +18,7 @@
     <link rel="index" title="Índice" href="genindex.html" />
     <link rel="search" title="Buscar" href="search.html" />
     <link rel="next" title="Scraper - Premiações" href="premiacoes.html" />
-    <link rel="prev" title="Documentação da Análise da Discografia da banda Guns N’ Roses’s!" href="index.html" /> 
+    <link rel="prev" title="Documentação da Análise da Discografia da banda Guns N’ Roses!" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -73,6 +73,376 @@
 <h1>Scraper<a class="headerlink" href="#scraper" title="Link permanente para este título">¶</a></h1>
 <div class="section" id="funcoes">
 <h2>Funções<a class="headerlink" href="#funcoes" title="Link permanente para este título">¶</a></h2>
+<dl class="function">
+<dt id="scrape.pegar_html">
+<code class="sig-prename descclassname">scrape.</code><code class="sig-name descname">pegar_html</code><span class="sig-paren">(</span><em class="sig-param">url: str</em><span class="sig-paren">)</span><a class="headerlink" href="#scrape.pegar_html" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>A função recebe um url do site lyrics.com, busca o html e retorna uma string 
+referente a página dada pela url</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param url</dt>
+<dd class="field-odd"><p>Link da página da internet que se deseja buscar o html</p>
+</dd>
+<dt class="field-even">url type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">return</dt>
+<dd class="field-odd"><p>Texto do html do link dado</p>
+</dd>
+<dt class="field-even">rtype</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="scrape.pegar_letra">
+<code class="sig-prename descclassname">scrape.</code><code class="sig-name descname">pegar_letra</code><span class="sig-paren">(</span><em class="sig-param">url: str</em><span class="sig-paren">)</span><a class="headerlink" href="#scrape.pegar_letra" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>A função recebe um url do site lyrics.com, busca a letra da música que está presente
+nesse html e retorna uma string referente a letra dessa música</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param url</dt>
+<dd class="field-odd"><p>Link da página da música</p>
+</dd>
+<dt class="field-even">url type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">return</dt>
+<dd class="field-odd"><p>letra da música</p>
+</dd>
+<dt class="field-even">rtype</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="scrape.pegar_letras_musicas_album">
+<code class="sig-prename descclassname">scrape.</code><code class="sig-name descname">pegar_letras_musicas_album</code><span class="sig-paren">(</span><em class="sig-param">url: str</em><span class="sig-paren">)</span><a class="headerlink" href="#scrape.pegar_letras_musicas_album" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>A função recebe um url do site lyrics.com referente ao álbum de uma banda,
+busca as letras de todas as músicas desse album e retorna uma lista com essas 
+músicas</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param url</dt>
+<dd class="field-odd"><p>Link da página do álbum</p>
+</dd>
+<dt class="field-even">url type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">return</dt>
+<dd class="field-odd"><p>Letras das músicas do álbum</p>
+</dd>
+<dt class="field-even">rtype</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="scrape.pegar_titulo">
+<code class="sig-prename descclassname">scrape.</code><code class="sig-name descname">pegar_titulo</code><span class="sig-paren">(</span><em class="sig-param">url: str</em><span class="sig-paren">)</span><a class="headerlink" href="#scrape.pegar_titulo" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>A função recebe um url do site lyrics.com, busca o nome da música que está
+presente nesse link o retorna</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param url</dt>
+<dd class="field-odd"><p>Link da página da música</p>
+</dd>
+<dt class="field-even">url type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">return</dt>
+<dd class="field-odd"><p>Título da música</p>
+</dd>
+<dt class="field-even">rtype</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="scrape.pegar_titulos_musicas_album">
+<code class="sig-prename descclassname">scrape.</code><code class="sig-name descname">pegar_titulos_musicas_album</code><span class="sig-paren">(</span><em class="sig-param">url: str</em><span class="sig-paren">)</span><a class="headerlink" href="#scrape.pegar_titulos_musicas_album" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>A função recebe um url do site lyrics.com referente ao álbum de uma banda, busca 
+os títulos de todas as músicas desse álbum e retorna uma lista com esses títulos</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param url</dt>
+<dd class="field-odd"><p>Link da página do álbum</p>
+</dd>
+<dt class="field-even">url type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">return</dt>
+<dd class="field-odd"><p>Títulos das músicas do álbum</p>
+</dd>
+<dt class="field-even">rtype</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="scrape.pegar_ano">
+<code class="sig-prename descclassname">scrape.</code><code class="sig-name descname">pegar_ano</code><span class="sig-paren">(</span><em class="sig-param">url: str</em><span class="sig-paren">)</span><a class="headerlink" href="#scrape.pegar_ano" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>A função recebe um url do site lyrics.com, busca o ano de lançamento da música que está presente
+nesse link e retorna uma string referente ao seu ano de lançamento</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param url</dt>
+<dd class="field-odd"><p>Link da página da música</p>
+</dd>
+<dt class="field-even">url type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">return</dt>
+<dd class="field-odd"><p>Ano de lançamento</p>
+</dd>
+<dt class="field-even">rtype</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="scrape.pegar_ano_musicas_album">
+<code class="sig-prename descclassname">scrape.</code><code class="sig-name descname">pegar_ano_musicas_album</code><span class="sig-paren">(</span><em class="sig-param">url: str</em><span class="sig-paren">)</span><a class="headerlink" href="#scrape.pegar_ano_musicas_album" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>A função recebe um url do site lyrics.com referente ao álbum de uma banda, busca
+o tempo de todas as músicas desse álbum e retorna uma lista com esses tempos</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param url</dt>
+<dd class="field-odd"><p>Link da página do álbum</p>
+</dd>
+<dt class="field-even">url type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">return</dt>
+<dd class="field-odd"><p>Tempo das músicas do álbum</p>
+</dd>
+<dt class="field-even">rtype</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="scrape.pegar_titulo_album">
+<code class="sig-prename descclassname">scrape.</code><code class="sig-name descname">pegar_titulo_album</code><span class="sig-paren">(</span><em class="sig-param">url: str</em><span class="sig-paren">)</span><a class="headerlink" href="#scrape.pegar_titulo_album" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>A função recebe um url do site lyrics.com referente ao album de uma banda, busca o título
+desse álbum e o retorna</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param url</dt>
+<dd class="field-odd"><p>Link da página do álbum</p>
+</dd>
+<dt class="field-even">url type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">return</dt>
+<dd class="field-odd"><p>Título do álbum</p>
+</dd>
+<dt class="field-even">rtype</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="scrape.pegar_compositores">
+<code class="sig-prename descclassname">scrape.</code><code class="sig-name descname">pegar_compositores</code><span class="sig-paren">(</span><em class="sig-param">url: str</em><span class="sig-paren">)</span><a class="headerlink" href="#scrape.pegar_compositores" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>A função recebe um url do site lyrics.com, busca o(s) compositor(es) da música desse desse url
+e retorna o(s) seu(s) nome(s)</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param url</dt>
+<dd class="field-odd"><p>Link da página da música</p>
+</dd>
+<dt class="field-even">url type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">return</dt>
+<dd class="field-odd"><p>Compositores da música</p>
+</dd>
+<dt class="field-even">rtype</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="scrape.pegar_compositores_musicas_album">
+<code class="sig-prename descclassname">scrape.</code><code class="sig-name descname">pegar_compositores_musicas_album</code><span class="sig-paren">(</span><em class="sig-param">url: str</em><span class="sig-paren">)</span><a class="headerlink" href="#scrape.pegar_compositores_musicas_album" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>A função recebe um url do site lyrics.com referente ao álbum de uma banda, busca 
+os compositores de todas as músicas desse álbum e retorna uma lista com esses compositores</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param url</dt>
+<dd class="field-odd"><p>Link da página do álbum</p>
+</dd>
+<dt class="field-even">url type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">return</dt>
+<dd class="field-odd"><p>Compositores das músicas do álbum</p>
+</dd>
+<dt class="field-even">rtype</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="scrape.pegar_duracao_musicas_album_spotify">
+<code class="sig-prename descclassname">scrape.</code><code class="sig-name descname">pegar_duracao_musicas_album_spotify</code><span class="sig-paren">(</span><em class="sig-param">spotify_id: str</em><span class="sig-paren">)</span><a class="headerlink" href="#scrape.pegar_duracao_musicas_album_spotify" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Usando o id de um álbum do spotify a função obtem a duração de todas as músicas
+desse álbum e retorna uma lista com esses valores</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param spotify_id</dt>
+<dd class="field-odd"><p>Id do álbum do spotify</p>
+</dd>
+<dt class="field-even">spotify_id type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">return</dt>
+<dd class="field-odd"><p>Lista da duração das músicas</p>
+</dd>
+<dt class="field-even">rtype</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="scrape.pegar_duracao_musicas_banda">
+<code class="sig-prename descclassname">scrape.</code><code class="sig-name descname">pegar_duracao_musicas_banda</code><span class="sig-paren">(</span><em class="sig-param">spotify_id_list: list</em><span class="sig-paren">)</span><a class="headerlink" href="#scrape.pegar_duracao_musicas_banda" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Usando os ids dos álbuns do spotify a função obtem a duração de todas as músicas
+dos álbuns dados e retorna um dataframe com esses valores</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param spotify_id_list</dt>
+<dd class="field-odd"><p>Lista de ids dos álbuns do spotify</p>
+</dd>
+<dt class="field-even">spotify_id_list type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+<dt class="field-odd">return</dt>
+<dd class="field-odd"><p>Dataframe da duração das músicas</p>
+</dd>
+<dt class="field-even">rtype</dt>
+<dd class="field-even"><p>DataFrame</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="scrape.pegar_popularidade_album_spotify">
+<code class="sig-prename descclassname">scrape.</code><code class="sig-name descname">pegar_popularidade_album_spotify</code><span class="sig-paren">(</span><em class="sig-param">spotify_id: str</em><span class="sig-paren">)</span><a class="headerlink" href="#scrape.pegar_popularidade_album_spotify" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Usando o id de um álbum do spotify a função obtem a popularidade de todas as músicas
+desse álbum e retorna uma lista com esses valores de popularidade</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param spotify_id</dt>
+<dd class="field-odd"><p>Id do álbum do spotify</p>
+</dd>
+<dt class="field-even">spotify_id type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">return</dt>
+<dd class="field-odd"><p>Lista da popularidade das músicas</p>
+</dd>
+<dt class="field-even">rtype</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="scrape.pegar_popularidade_banda_spotify">
+<code class="sig-prename descclassname">scrape.</code><code class="sig-name descname">pegar_popularidade_banda_spotify</code><span class="sig-paren">(</span><em class="sig-param">spotify_id_list: list</em><span class="sig-paren">)</span><a class="headerlink" href="#scrape.pegar_popularidade_banda_spotify" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Usando os ids dos álbuns do spotify a função obtem a popularidade de todas as músicas
+dos álbuns dados e retorna um dataframe com esses valores de popularidade</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param spotify_id_list</dt>
+<dd class="field-odd"><p>Lista de ids dos álbuns do spotify</p>
+</dd>
+<dt class="field-even">spotify_id_list type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+<dt class="field-odd">return</dt>
+<dd class="field-odd"><p>Dataframe da popularidade das músicas</p>
+</dd>
+<dt class="field-even">rtype</dt>
+<dd class="field-even"><p>DataFrame</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="scrape.gerar_dataframe_album">
+<code class="sig-prename descclassname">scrape.</code><code class="sig-name descname">gerar_dataframe_album</code><span class="sig-paren">(</span><em class="sig-param">url: str</em><span class="sig-paren">)</span><a class="headerlink" href="#scrape.gerar_dataframe_album" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Usando as funções criadas está função cria um dataframe de um álbum dado a partir de
+um url do site lyrics.com da página desse álbum</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param url</dt>
+<dd class="field-odd"><p>Link da página do álbum</p>
+</dd>
+<dt class="field-even">url type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">return</dt>
+<dd class="field-odd"><p>Dataframe do álbum</p>
+</dd>
+<dt class="field-even">rtype</dt>
+<dd class="field-even"><p>DataFrame</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="scrape.gerar_dataframe_banda">
+<code class="sig-prename descclassname">scrape.</code><code class="sig-name descname">gerar_dataframe_banda</code><span class="sig-paren">(</span><em class="sig-param">url_list: list</em><span class="sig-paren">)</span><a class="headerlink" href="#scrape.gerar_dataframe_banda" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Usando as funções criadas e recebendo como parâmetro uma lista de links esta
+função obtem um dataframe de uma banda dada a partir de uma lista de urls com
+os seus álbums</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param url_list</dt>
+<dd class="field-odd"><p>Lista de links dos albuns da banda</p>
+</dd>
+<dt class="field-even">url_list type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+<dt class="field-odd">return</dt>
+<dd class="field-odd"><p>Dataframe da banda</p>
+</dd>
+<dt class="field-even">rtype</dt>
+<dd class="field-even"><p>DataFrame</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
 </div>
 </div>
 
@@ -80,7 +450,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="Documentação da Análise da Discografia da banda Guns N’ Roses’s!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Documentação da Análise da Discografia da banda Guns N’ Roses!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="premiacoes.html" class="btn btn-neutral float-right" title="Scraper - Premiações" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
